@@ -2,15 +2,20 @@
  * @FileDescription: ***
  * @Author: wu0304
  * @Date: 2023-09-11 22:15:50
- * @LastEditors: 吴晨
- * @LastEditTime: 2024-02-08 21:44:44
+ * @LastEditors: cigarette
+ * @LastEditTime: 2024-02-25 17:44:36
  */
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 // import { createElement, render } from './jsxHandle'
 import DemoOne from './views/DemoOne'
 import Vote from './views/Vote'
-import Demo from './views/Demo5'
+// import Demo from './views/Demo2'
+// import Demo from './views/Demo3'
+// import Demo from './views/Demo4'
+// import Demo from './views/Demo5'
+// import Demo from './views/Demo6'
+import Demo from './views/Demo7'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
