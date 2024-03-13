@@ -8,14 +8,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 // import { createElement, render } from './jsxHandle'
-import DemoOne from './views/DemoOne'
-import Vote from './views/Vote'
+// import DemoOne from './views/DemoOne'
+// import Vote from './views/Vote'
 // import Demo from './views/Demo2'
 // import Demo from './views/Demo3'
 // import Demo from './views/Demo4'
 // import Demo from './views/Demo5'
 // import Demo from './views/Demo6'
-import Demo from './views/Demo7'
+// import Demo from './views/Demo7'
+import Demo from './views/Demo8'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
