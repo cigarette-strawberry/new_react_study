@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件及事件委托</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      #root {
+        width: 300px;
+        height: 300px;
+        background-color: lightpink;
+      }
+
+      #outer {
+        width: 200px;
+        height: 200px;
+        text-align: center;
+        background-color: lightcyan;
+      }
+
+      #inner {
+        width: 100px;
+        height: 100px;
+        background-color: lightgreen;
+      }
+
+      .center {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="center">
+      <div id="outer" class="center">
+        <div id="inner" class="center"></div>
+      </div>
+    </div>
+
+    <!-- <script>
+      // 层级结构 window -> document -> html -> body -> root -> outer -> inner
+      // ev.stopPropagation 阻止事件的传播「包含捕获和冒泡」
+      // ev.stopImmediatePropagation 也是阻止事件传播，只不过它可以阻止当前元素绑定的其他方法「同级的」，如果还未执行，也不会再让其执行！！
+      const html = document.documentElement,
+        body = document.body,
+        root = document.querySelector('#root'),
+        outer = document.querySelector('#outer'),
+        inner = document.querySelector('#inner')
+
+      // 第三个参数 true 捕获阶段触发
+      // 第三个参数 false 冒泡阶段触发
+      root.addEventListener(
+        'click',
+        ev => {
+          // ev.stopPropagation() // 阻止下方的捕获和冒泡
+          console.log('🚀 ~ root.addEventListener ~ root:捕获')
+        },
+        true
+      )
+      root.addEventListener(
+        'click',
+        () => {
+          console.log('🚀 ~ root.addEventListener ~ root:冒泡')
+        },
+        false
+      )
+
+      outer.addEventListener(
+        'click',
+        () => {
+          console.log('🚀 ~ outer.addEventListener ~ outer:捕获')
+        },
+        true
+      )
+      outer.addEventListener(
+        'click',
+        () => {
+          console.log('🚀 ~ outer.addEventListener ~ outer:冒泡')
+        },
+        false
+      )
+
+      inner.addEventListener(
+        'click',
+        ev => {
+          // ev.stopPropagation()
+          console.log('🚀 ~ inner.addEventListener ~ inner:捕获')
+        },
+        true
+      )
+      inner.addEventListener(
+        'click',
+        ev => {
+          // ev.stopPropagation()
+          ev.stopImmediatePropagation()
+          console.log('🚀 ~ inner.addEventListener ~ inner:冒泡1')
+        },
+        false
+      )
+      inner.addEventListener(
+        'click',
+        ev => {
+          console.log('🚀 ~ inner.addEventListener ~ inner:冒泡2')
+        },
+        false
+      )
+    </script> -->
+
+    <script>
+      /**
+       * 事件委托：利用事件的传播机制，实现的一套事件绑定处理方案
+       *  例如：一个容器中，有很多元素都要在点击的时候做一些事情
+       *    传统方案：首先获取需要操作的元素，然后逐一做事件绑定
+       *    事件委托：只需要给容器做一个事件绑定「点击内部的任何元素，根据事件的冒泡传播机制，都会让容器的点击事件触发；我们在这里，根据事件源，做不同的事情就可以了」
+       * 优势：
+       * 1、提升JS代码运行性能，并且把处理的逻辑都集中在一起！！
+       * 2、某些需求必须基于事件委托处理，例如：除了点击xxx外，点击其余的任何东西，都该做什么就去做什么
+       * 3、给动态绑定的元素做事件绑定，例如：通过createElement()创建的元素
+       * 限制：
+       * 1、当前操作的事件必须支持冒泡传播机制才可以，例如：mouseenter / mouseleave 等事件是没有冒泡传播机制的
+       * 2、如果单独做的事件绑定中，做了事件传播机制的阻止，那么事件委托中的操作也不会生效！！
+       */
+
+      const body = document.body
+      body.addEventListener('click', ev => {
+        // ev.target：事件源「点击的是谁，谁就是事件源」
+        const target = ev.target,
+          id = target.id
+        switch (id) {
+          case 'root':
+            console.log('🚀 ~ root:')
+            break
+          case 'outer':
+            console.log('🚀 ~ outer:')
+            break
+          case 'inner':
+            console.log('🚀 ~ inner:')
+            break
+          default:
+            break
+        }
+      })
+      // 单独做的事件绑定中，做了事件传播机制的阻止 就会阻止上方的代码执行
+      const outer = document.querySelector('#outer')
+      outer.addEventListener('click', ev => {
+        ev.stopPropagation()
+        console.log('🚀 ~ outer.addEventListener ~ outer:冒泡')
+      })
+
+      // 传统方案
+      /* const html = document.documentElement,
+        body = document.body,
+        root = document.querySelector('#root'),
+        outer = document.querySelector('#outer'),
+        inner = document.querySelector('#inner')
+
+      root.addEventListener('click', ev => {
+        console.log('🚀 ~ root.addEventListener ~ root:冒泡')
+      })
+      outer.addEventListener('click', ev => {
+        console.log('🚀 ~ outer.addEventListener ~ outer:冒泡')
+      })
+      inner.addEventListener('click', ev => {
+        console.log('🚀 ~ inner.addEventListener ~ inner:冒泡')
+      }) */
+    </script>
+  </body>
+</html>
