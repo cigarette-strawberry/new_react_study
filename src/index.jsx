@@ -16,7 +16,10 @@ import ReactDOM from 'react-dom/client'
 // import Demo from './views/Demo5'
 // import Demo from './views/Demo6'
 // import Demo from './views/Demo7'
-import Demo from './views/Demo8'
+// import Demo from './views/Demo8'
+import Demo from './views/Demo9'
+
+import './index.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件及事件委托</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      #root {
+        width: 300px;
+        height: 300px;
+        background-color: lightpink;
+      }
+
+      #outer {
+        width: 200px;
+        height: 200px;
+        text-align: center;
+        background-color: lightcyan;
+      }
+
+      #inner {
+        width: 100px;
+        height: 100px;
+        background-color: lightgreen;
+      }
+
+      .center {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="center">
+      <div id="outer" class="center">
+        <div id="inner" class="center"></div>
+      </div>
+    </div>
+    <script>
+      const root = document.querySelector('#root'),
+        outer = document.querySelector('#outer'),
+        inner = document.querySelector('#inner')
+
+      // 经过视图的渲染解析，outer/inner上都有onXxx/onXxxCapture这样的属性
+      outer.onClick = () => console.log('outer 冒泡「合成」')
+      outer.onClickCapture = () => console.log('outer 捕获「合成」')
+      inner.onClick = () => console.log('inner 冒泡「合成」')
+      inner.onClickCapture = () => console.log('inner 捕获「合成」')
+
+      // 给root元素做事件绑定
+      root.addEventListener(
+        'click',
+        ev => {
+          const path = ev.composedPath() // 事件捕获路径
+          ;[...path].reverse().forEach(ele => {
+            const handle = ele.onClickCapture
+            if (handle) handle()
+          })
+        },
+        true
+      )
+      root.addEventListener(
+        'click',
+        ev => {
+          const path = ev.composedPath() // 事件捕获路径
+          path.forEach(ele => {
+            const handle = ele.onClick
+            if (handle) handle()
+          })
+        },
+        false
+      )
+    </script>
+  </body>
+</html>
